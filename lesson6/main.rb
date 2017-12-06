@@ -24,19 +24,16 @@ Ship.info
 game.print_field
 #game.field.each { |item| p item }
 
-# loop do
-#   puts 'Введите Х для выстрела:'
-#   x = gets.to_i
-#   puts 'Введите У для выстрела:'
-#   y = gets.to_i
-#   if Shot.shots_coords.any? { |shot_c| shot_c == Coord.new(x, y) }
-#     puts 'Такой выстрел уже был!'
-#     next
-#   end
-#   if game.make_shot(x, y, ship)
-#     puts 'Попадание!'
-#   else
-#     puts 'Мимо!'
-#   end
-#   break if ship.damaged_decks == ship.size
-# end
+loop do
+  puts 'Введите Х для выстрела:'
+  x = gets.to_i
+  puts 'Введите У для выстрела:'
+  y = gets.to_i
+  if Shot.shots_coords.any? { |shot_c| shot_c == Coord.new(x, y) }
+    puts 'Такой выстрел уже был!'
+    next
+  end
+  game.make_shot(x, y)
+  game.print_field
+  break if Ship.total_ships == 0
+end

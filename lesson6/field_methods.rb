@@ -28,18 +28,16 @@ module FieldMethods
     case c
       when nil
         print ' . '
-      when 0
-        print ' O '
       when 1
         print ' X '
       else
-        raise ' o_____O ?'
+        print ' O '
     end
   end
 
   def add_to_field(ship)
     ship.coordinates.each do |coord|
-      @field[coord.x - 1][coord.y - 1] = 0
+      @field[coord.x - 1][coord.y - 1] = ship
     end
   end
 

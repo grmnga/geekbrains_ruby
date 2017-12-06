@@ -56,10 +56,25 @@ class Ship
       @@ship_list
     end
 
+    def total_ships
+      @@total_ships
+    end
+
     def info
       puts "Всего корабликов (@@total_ships) = #{@@total_ships}"
       puts "Хэш корабликов (@@ships): #{@@ships}"
       puts
+    end
+  end
+
+  def killed?
+    size == damaged_decks
+  end
+
+  def total_ships_down
+    @@total_ships -= 1
+    if @@total_ships < 0
+      raise 'Количество корабликов меньше минимально допустимого!'
     end
   end
 
