@@ -1,14 +1,15 @@
 require_relative 'coord'
 require_relative 'ship'
 require_relative 'shot'
+require_relative 'field_methods'
 
 # Здесь создаются кораблики
 class Game
+  include FieldMethods
 
   def initialize
     @field = Array.new(10){Array.new(10)}
-    @letters = ('А'..'К').to_a
-    @letters.delete_at(9)
+    @letters = ('A'..'J').to_a
   end
 
   def fill_the_field
@@ -32,45 +33,8 @@ class Game
     false
   end
 
-  def field
-    @field
-  end
+  private
 
-  def print_field
-    print_letters
-    i = 1
-    field.each do |line|
-      print format("%2i", i)
-      print_line(line)
-      i += 1
-    end
-  end
-
-  def print_letters
-    print ' '
-    @letters.each { |i| print format("%3s", i)}
-    puts
-  end
-
-  def print_line(line)
-    line.each do |cell|
-      print_symbol(cell)
-    end
-    puts
-  end
-
-  def print_symbol(c)
-    case c
-      when nil
-        print ' . '
-      when 0
-        print ' O '
-      when 1
-        print ' X '
-      else
-        raise ' o_____O ?'
-    end
-  end
 
   def touch_another_ship?(ship)
     (-1).upto(1) do |dx|
@@ -85,13 +49,10 @@ class Game
     false
   end
 
-  private
-
   def create_ship(size)
     loop do
       ship = Ship.new(size)
       fill_ship_coords(ship)
-      p touch_another_ship?(ship)
       next if out_of_field?(ship) || touch_another_ship?(ship)
       ship.add_to_ship_list
       return ship
@@ -125,15 +86,11 @@ class Game
     ship.coordinates.last.x > 10 || ship.coordinates.last.y > 10
   end
 
-  def add_to_field(ship)
-    ship.coordinates.each do |coord|
-      @field[coord.x - 1][coord.y - 1] = 0
-    end
-  end
-
   def anybody_here?(x, y)
     if (0..9).include?(x) && (0..9).include?(y)
       return true if @field[x][y]
     end
   end
+
+
 end

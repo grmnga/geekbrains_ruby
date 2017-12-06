@@ -26,7 +26,7 @@ class Ship
 
   def add_to_ship_list
     total_ships_up
-    add_ships(size)
+    add_to_ships(size)
     ship_list_push(self)
   end
 
@@ -77,7 +77,7 @@ class Ship
     end
   end
 
-  def add_ships(decks)
+  def add_to_ships(decks)
     if ships.key?(decks)
       @@ships[decks] += 1
       if @@ships[decks] > Ship.how_many(decks)
