@@ -33,4 +33,13 @@ module ShipMethods
     y += i * (direction ? 1 : 0)
     coord = Coord.new(x, y)
   end
+
+  def ship_state(ship)
+    if ship.killed?
+      ship.total_ships_down
+      puts 'Убит!'
+    else
+      puts 'Попадание!'
+    end
+  end
 end

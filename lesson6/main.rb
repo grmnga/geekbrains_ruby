@@ -1,34 +1,38 @@
-require_relative 'ship'
 require_relative 'game'
 
-# 4.times do
-#   ship = Ship.new(1)
-#   Ship.how_many_now(ship)
-#   Ship.info
-# end
-#
-# 3.times do
-#   ship = Ship.new(2)
-#   Ship.how_many_now(ship)
-#   Ship.info
-# end
+def get_y(string)
+  if Game.letters.include?(string[0].upcase)
+    Game.letters.find_index(string[0].upcase)
+  end
+end
+
+def get_x(string)
+  if (1..10).include?(string[1,2].to_i)
+    string[1,2].to_i - 1
+  end
+end
+
+def get_coors(string)
+  y = get_y(string)
+  x = get_x(string)
+  unless x && y
+    puts 'Неправильное значение!'
+    return
+  end
+  [x, y]
+end
 
 game = Game.new
-# ship = game.create_ship(rand(10) + 1, rand(10) + 1, 4)
-# ship.print_coords
-# Ship.info
 puts 'start new game'
 game.fill_the_field
 
 Ship.info
 game.print_field
-#game.field.each { |item| p item }
 
 loop do
-  puts 'Введите Х для выстрела:'
-  x = gets.to_i
-  puts 'Введите У для выстрела:'
-  y = gets.to_i
+  puts 'Введите координаты для выстрела (A1..J10)'
+  target = gets.chomp
+  next unless (x, y = get_coors(target))
   if Shot.shots_coords.any? { |shot_c| shot_c == Coord.new(x, y) }
     puts 'Такой выстрел уже был!'
     next

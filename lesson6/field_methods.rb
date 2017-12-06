@@ -13,7 +13,7 @@ module FieldMethods
 
   def print_letters
     print ' '
-    @letters.each { |i| print format("%3s", i)}
+    Game.letters.each { |i| print format("%3s", i)}
     puts
   end
 

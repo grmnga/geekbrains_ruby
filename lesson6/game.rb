@@ -4,14 +4,14 @@ require_relative 'shot'
 require_relative 'field_methods'
 require_relative 'ship_methods'
 
-# Здесь создаются кораблики
+# Здесь создаются кораблики и совершаются выстрелы
 class Game
   include FieldMethods
   include ShipMethods
 
   def initialize
     @field = Array.new(10){Array.new(10)}
-    @letters = ('A'..'J').to_a
+    @@letters = ('A'..'J').to_a
   end
 
   def fill_the_field
@@ -25,33 +25,40 @@ class Game
   end
 
   def make_shot(x, y)
-    if Shot.shots_coords.any? { |coord| coord == Coord.new(x, y) }
+    if shots_coords_include?(x, y)
       puts 'Такой выстрел уже был!'
       return
-    else
-      shot = Shot.new(Coord.new(x, y))
-      if field[x][y] && field[x][y] != 1
-        ship = field[x][y]
-        shot.hit = true
-        ship.damaged_decks += 1
-        field[x][y] = 1
-        ship_state(ship)
-        return
-      end
-      puts 'Мимо!'
     end
+    if cell_contains_ship?(x, y)
+      shoot_him(x, y)
+      return
+    end
+    shot = Shot.new(Coord.new(x, y))
+    puts 'Мимо!'
   end
 
-  def ship_state(ship)
-    if ship.killed?
-      ship.total_ships_down
-      puts 'Убит!'
-    else
-      puts 'Попадание!'
-    end
+  def self.letters
+    @@letters
   end
 
   private
+
+  def shoot_him(x, y)
+    ship = field[x][y]
+    ship.damaged_decks += 1
+    shot = Shot.new(Coord.new(x, y))
+    shot.hit = true
+    field[x][y] = 1
+    ship_state(ship)
+  end
+
+  def shots_coords_include?(x, y)
+    Shot.shots_coords.any? {|coord| coord == Coord.new(x, y)}
+  end
+
+  def cell_contains_ship?(x, y)
+    field[x][y] && field[x][y] != 1
+  end
 
   def touch_another_ship?(ship)
     (-1).upto(1) do |dx|
