@@ -10,7 +10,7 @@ class Game
   include ShipMethods
 
   def initialize
-    @field = Array.new(10){Array.new(10)}
+    @field = Array.new(10) { Array.new(10) }
     @@letters = ('A'..'J').to_a
   end
 
@@ -33,8 +33,7 @@ class Game
       shoot_him(x, y)
       return
     end
-    shot = Shot.new(Coord.new(x, y))
-    puts 'Мимо!'
+    mishit(x, y)
   end
 
   def self.letters
@@ -43,17 +42,23 @@ class Game
 
   private
 
+  def mishit(x, y)
+    Shot.new(Coord.new(x, y))
+    field[x][y] = 0
+    puts 'Мимо!'
+  end
+
   def shoot_him(x, y)
     ship = field[x][y]
     ship.damaged_decks += 1
     shot = Shot.new(Coord.new(x, y))
     shot.hit = true
     field[x][y] = 1
-    ship_state(ship)
+    ship.ship_state
   end
 
   def shots_coords_include?(x, y)
-    Shot.shots_coords.any? {|coord| coord == Coord.new(x, y)}
+    Shot.shots_coords.any? { |coord| coord == Coord.new(x, y) }
   end
 
   def cell_contains_ship?(x, y)
@@ -61,8 +66,8 @@ class Game
   end
 
   def touch_another_ship?(ship)
-    (-1).upto(1) do |dx|
-      (-1).upto(1) do |dy|
+    -1.upto(1) do |dx|
+      -1.upto(1) do |dy|
         ship.coordinates.each do |ship_coord|
           x = ship_coord.x + dx - 1
           y = ship_coord.y + dy - 1

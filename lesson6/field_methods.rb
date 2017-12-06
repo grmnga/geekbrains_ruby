@@ -1,9 +1,12 @@
+# методы для поля морского боя
 module FieldMethods
+  attr_reader :field
+
   def print_field
     print_letters
     i = 1
     field.each do |line|
-      print format("%2i", i)
+      print format('%2i', i)
       print_line(line)
       i += 1
     end
@@ -13,7 +16,7 @@ module FieldMethods
 
   def print_letters
     print ' '
-    Game.letters.each { |i| print format("%3s", i)}
+    Game.letters.each { |i| print format('%3s', i) }
     puts
   end
 
@@ -26,12 +29,14 @@ module FieldMethods
 
   def print_symbol(c)
     case c
-      when nil
-        print ' . '
-      when 1
-        print ' X '
-      else
-        print ' O '
+    when nil
+      print ' . '
+    when 1
+      print ' X '
+    when 0
+      print ' + '
+    else
+      print ' O '
     end
   end
 
@@ -39,9 +44,5 @@ module FieldMethods
     ship.coordinates.each do |coord|
       @field[coord.x - 1][coord.y - 1] = ship
     end
-  end
-
-  def field
-    @field
   end
 end

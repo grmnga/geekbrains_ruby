@@ -6,7 +6,7 @@ module ShipMethods
       ship = Ship.new(size)
       fill_ship_coords(ship)
       next if out_of_field?(ship) || touch_another_ship?(ship)
-      ship.add_to_ship_list
+      ship.add_ship
       return ship
     end
   end
@@ -31,15 +31,6 @@ module ShipMethods
   def create_coord(x, y, direction, i)
     x += i * (direction ? 0 : 1)
     y += i * (direction ? 1 : 0)
-    coord = Coord.new(x, y)
-  end
-
-  def ship_state(ship)
-    if ship.killed?
-      ship.total_ships_down
-      puts 'Убит!'
-    else
-      puts 'Попадание!'
-    end
+    Coord.new(x, y)
   end
 end

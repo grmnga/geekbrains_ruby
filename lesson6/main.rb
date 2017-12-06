@@ -23,7 +23,7 @@ def get_coors(string)
 end
 
 game = Game.new
-puts 'start new game'
+puts 'Start new game'
 game.fill_the_field
 
 Ship.info
@@ -32,7 +32,8 @@ game.print_field
 loop do
   puts 'Введите координаты для выстрела (A1..J10)'
   target = gets.chomp
-  next unless (x, y = get_coors(target))
+  x, y = get_coors(target)
+  next unless x && y
   if Shot.shots_coords.any? { |shot_c| shot_c == Coord.new(x, y) }
     puts 'Такой выстрел уже был!'
     next
@@ -41,3 +42,4 @@ loop do
   game.print_field
   break if Ship.total_ships == 0
 end
+pust 'Game over'

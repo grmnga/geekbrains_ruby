@@ -7,6 +7,7 @@ class Ship
   FOUR_DECK_NUMBER = 1
   MIN_DECKS = 1
   MAX_DECKS = 4
+
   @@total_ships = 0
   @@ships = {}
   @@ship_list = []
@@ -24,14 +25,10 @@ class Ship
     @coordinates = []
   end
 
-  def add_to_ship_list
+  def add_ship
     total_ships_up
     add_to_ships(size)
-    ship_list_push(self)
-  end
-
-  def ship_list_push(val)
-    @@ship_list.push(val)
+    add_to_ship_list(self)
   end
 
   def add_coord(new_value)
@@ -43,11 +40,27 @@ class Ship
     puts
   end
 
+  def ship_state
+    if killed?
+      total_ships_down
+      puts 'Убит!'
+    else
+      puts 'Попадание!'
+    end
+  end
+
+  def killed?
+    size == damaged_decks
+  end
+
   class << self
     def how_many(decks)
       [ONE_DECK_NUMBER, TWO_DECK_NUMBER, THREE_DECK_NUMBER, FOUR_DECK_NUMBER][decks - 1]
     end
 
+    # 4. Создать метод, который принимал бы объект кораблик и
+    # мог бы выводить, сколько еще есть
+    # корабликов с таким же количеством палуб. (по​​желанию​)
     def how_many_now(ship_object)
       puts "Количество корабликов с #{ship_object.size} палубами - #{@@ships[ship_object.size]}"
     end
@@ -67,8 +80,17 @@ class Ship
     end
   end
 
-  def killed?
-    size == damaged_decks
+  private
+
+  def add_to_ship_list(val)
+    @@ship_list.push(val)
+  end
+
+  def total_ships_up
+    @@total_ships += 1
+    if @@total_ships > MAX_SHIPS_NUMBER
+      raise 'Количество корабликов превышает максимально допустимое!'
+    end
   end
 
   def total_ships_down
@@ -78,18 +100,9 @@ class Ship
     end
   end
 
-  private
-
   def size=(size)
     raise 'Неверное количество палуб' unless (1..4).cover?(size)
     @size = size
-  end
-
-  def total_ships_up
-    @@total_ships += 1
-    if @@total_ships > MAX_SHIPS_NUMBER
-      raise 'Количество корабликов превышает максимально допустимое!'
-    end
   end
 
   def add_to_ships(decks)
