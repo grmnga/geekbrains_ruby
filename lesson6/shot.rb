@@ -4,16 +4,10 @@ require_relative 'coord'
 class Shot
   attr_accessor :hit
   attr_reader :coord
-  @@shots_coords = []
 
-  def initialize(coord)
-    self.coord = coord
-    @@shots_coords.push(coord)
+  def initialize(x, y)
+    self.coord = Coord.new(x, y)
     self.hit = false
-  end
-
-  def self.shots_coords
-    @@shots_coords
   end
 
   private
