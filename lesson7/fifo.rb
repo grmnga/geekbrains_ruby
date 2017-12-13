@@ -9,7 +9,7 @@ test = Fifo.new
 10.times { |i| test.add_to_fifo(i) }
 p test.fifo
 
-10.times do
-  p test.take_from_fifo
+5.times do |i|
+  p test.take_from_fifo(i)
   p test.fifo
 end
